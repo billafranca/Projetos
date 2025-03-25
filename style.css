@@ -1,0 +1,152 @@
+body{
+    background:
+    linear-gradient(135deg,#000080,white,#000080);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    
+}
+
+
+
+footer{
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    background-color: #000080;
+    color: white;
+    left: 0;
+    right: 0;
+    margin: 0;
+    text-align: center;
+    padding: 5px 0;
+
+}
+
+
+
+
+
+main{
+    width: 60vh;
+    padding: 65px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border-radius: 40px;
+    box-shadow: 0px 3px 40px bisque;
+    margin: 0 auto;
+    line-break: auto;
+    background-color: #f9f9f9; 
+    transition: all 0.3s ease; 
+}
+main:hover{
+    transform: scale(1.1); 
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); 
+    
+}
+
+main{
+    background-color: #000080;
+    color: bisque;
+}
+       
+
+
+button[type="submit"] {
+    background-color: #000080;
+    color: bisque;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease; 
+    margin: 10px 0;
+}
+
+button[type="submit"]:hover {
+    background-color: bisque;
+    color: #000080;
+    box-shadow: inset(135deg, blue, blue, bisque), 0 0 15px rgba(255, 255, 255, 0.5);
+    transform: scale(1.1); 
+}
+
+button[type="button"] {
+    background-color: #f8f9fa;
+    color: #007BFF;
+    border: 1px solid #007BFF;
+}
+
+button[type="button"]:hover {
+    background-color: #007BFF;
+    color: #fff;
+}
+
+button[type="button"] a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+button[type="button"] a:hover {
+    text-decoration: underline;
+}
+
+input {
+    width: 80%; 
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    box-sizing: border-box;
+    outline: none;
+    background-color: #f9f9f9; 
+    transition: border 0.3s ease, box-shadow 0.3s ease; 
+}
+
+input:focus {
+    border-color: #007BFF; 
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+}
+
+button {
+    background-color: bisque; 
+    color: #000080; 
+    border: none; 
+    padding: 7px ; 
+    text-align: center; 
+    text-decoration: none;
+    display: inline-block; 
+    font-size: 16px; 
+    cursor: pointer; 
+    border-radius: 5px; 
+    transition: background-color 0.3s; 
+}
+
+button a {
+    color: white; 
+    text-decoration: none; 
+}
+
+button:hover {
+    background-color: bisque;
+}
+
+button[type="button"] {
+    background-color: #000080; 
+}
+
+button[type="button"] {
+    background-color: #000080;
+}
+
+button[type="button"]:hover {
+    background-color: bisque;
+}
+
+button[type="button"]:hover {
+    background-color: bisque; 
+}
