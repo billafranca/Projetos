@@ -1,0 +1,6 @@
+body{
+    background: 
+    linear-gradient(135deg, white, white, yellow);
+    background-size: 100% 100%;
+    background-attachment: fixed;
+}
