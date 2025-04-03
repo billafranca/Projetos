@@ -2,10 +2,12 @@ import pyautogui
 import time
 import webbrowser
 
-def pesquisar_no_chatgpt(termo_de_busca):
+def abrir_chatgpt():
     webbrowser.open("https://chatgpt.com")
-    time.sleep(2)
+    time.sleep(5)
 
+def pesquisar_no_chatgpt(termo_de_busca):
+    abrir_chatgpt()
     pyautogui.position()
     pyautogui.click()
     time.sleep(1)
