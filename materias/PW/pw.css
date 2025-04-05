@@ -1,5 +1,5 @@
 body {
-    background: linear-gradient(135deg, rgb(195, 195, 97), rgb(249, 203, 134), white);
+    background: linear-gradient(135deg, rgb(0, 72, 255), white, white);
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -22,13 +22,12 @@ body {
 
 p {
     font-size: 20px;
-    font-family: 'Courier New', Courier, monospace;
 }
 
 .container {
-    background-color: rgb(253, 242, 172);
+    background-color: rgb(94, 118, 243);
     border-radius: 10px;
-    width: 1000px;
+    width: 700px;
     margin: 0 auto;
     transition: all 0.8s ease-in-out;
 }
@@ -38,19 +37,20 @@ p {
 }
 
 img {
-    width: 30%;
-    background-size: contain;
-    background-repeat: no-repeat;
-    display: block;
-    margin: 0 auto;
     border-radius: 10px;
+    border: 2px solid rgb(0, 0, 0);
+    margin: 0 auto;
+    padding: 5px;
+    width: 300px;
     opacity: 1;
-    transition-timing-function: ease;
-}
-img:hover{
-    opacity: 0.8;
+    transition: opacity 0.5s ease;
+    cursor: pointer;
+    translate: 470px;
 }
 
+img:hover {
+    opacity: 0.5;
+}
 .container + .container {
     margin-top: 20px;
 }

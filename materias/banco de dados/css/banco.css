@@ -49,3 +49,6 @@ p{
     gap: 10px;
     
 }
+.container + .container{
+    margin-top: 20px;
+}
