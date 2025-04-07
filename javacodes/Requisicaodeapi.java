@@ -15,6 +15,7 @@ public class Requisicaodeapi extends JFrame implements ActionListener {
     private JTextArea textArea;
 
     public Requisicaodeapi() {
+        
         campoTexto = new JTextField(20);
         botao = new JButton("Enviar");
         textArea = new JTextArea(10, 30);
@@ -22,17 +23,23 @@ public class Requisicaodeapi extends JFrame implements ActionListener {
         textArea.setWrapStyleWord(true);
         textArea.setEditable(false);
 
+        
         JScrollPane scrollPane = new JScrollPane(textArea);
 
+    
         botao.addActionListener(this);
 
+    
         JPanel painel = new JPanel();
-        painel.add(campoTexto);
-        painel.add(botao);
-        painel.add(scrollPane);
+        painel.setLayout(new BorderLayout());
+        painel.add(campoTexto, BorderLayout.NORTH);
+        painel.add(botao, BorderLayout.CENTER);
+        painel.add(scrollPane, BorderLayout.SOUTH);
 
+        
         add(painel);
 
+        
         setTitle("Requisição de API");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
@@ -40,12 +47,20 @@ public class Requisicaodeapi extends JFrame implements ActionListener {
         setVisible(true);
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == botao) {
-            String url = campoTexto.getText();
+            String url = campoTexto.getText().trim();
 
+            if (url.isEmpty()) {
+                textArea.setText("Por favor, insira uma URL válida.");
+                return;
+            }
+
+            
             new Thread(() -> {
                 try {
+                    
                     URL urlObj = new URL(url);
                     HttpURLConnection conexao = (HttpURLConnection) urlObj.openConnection();
                     conexao.setRequestMethod("GET");
@@ -53,6 +68,7 @@ public class Requisicaodeapi extends JFrame implements ActionListener {
 
                     int resposta = conexao.getResponseCode();
 
+                    
                     if (resposta == HttpURLConnection.HTTP_OK) {
                         BufferedReader leitor = new BufferedReader(new InputStreamReader(conexao.getInputStream()));
                         StringBuilder conteudo = new StringBuilder();
@@ -66,6 +82,8 @@ public class Requisicaodeapi extends JFrame implements ActionListener {
                     } else {
                         SwingUtilities.invokeLater(() -> textArea.setText("Erro na requisição: " + resposta));
                     }
+
+                    conexao.disconnect();
                 } catch (Exception ex) {
                     SwingUtilities.invokeLater(() -> textArea.setText("Erro: " + ex.getMessage()));
                 }
