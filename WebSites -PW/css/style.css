@@ -28,8 +28,8 @@ footer{
 
 
 main{
-    width: 60vh;
-    padding: 65px;
+    width: 80vh;
+    padding: 50px;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -41,7 +41,7 @@ main{
     margin: 0 auto;
     line-break: auto;
     background-color: #f9f9f9; 
-    transition: all 0.3s ease; 
+    transition: all 0.8s ease; 
 }
 main:hover{
     transform: scale(1.1); 
