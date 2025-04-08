@@ -1,0 +1,54 @@
+body{
+    background-color: rgb(107, 165, 169);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.container .title{
+    font-size: 30px;
+    font-weight: 600;
+}
+.container .title::before{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 30px;
+    background-color: rgb(0, 0, 0);
+}
+p{
+    font-size: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    color: rgb(0, 0, 0);
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: rgb(107, 165, 169);
+    border-radius: 10px;
+    border: 2px solid rgb(0, 0, 0);
+}
+.container{
+    background-color: rgb(107, 165, 169);
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid rgb(0, 0, 0);
+    box-shadow: 0px 3px 40px rgb(0, 0, 0);
+    margin: 0 auto;
+    width: 700px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+.container:hover{
+    transform: scale(1.1);
+}
+.container{
+    justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    
+}
+.container + .container{
+    margin-top: 20px;
+}
