@@ -8,7 +8,7 @@
 <body>
 
 <header>
-  <h1>Olá, Mundo! 👋 Eu sou Pedro Billafranca</h1>
+  <h1>🚀 Introdução ao DS</h1>
    <h4>Atualmente estudando/cursando Desenvolvimento de Sistemas na ETEC e na E.E PEI - Professora Guiomar Rocha Rinaldi - EM, onde estou aprendendo os fundamentos do desenvolvimento de software — e literalmente tudo o que envolve tecnologia.</h4>
 </header>
 
@@ -18,13 +18,8 @@
     <li>💻 HTML, CSS e JavaScript – Utilizo essas tecnologias para criar páginas web simples e responsivas, e também para estudar front-end com o intuito de iniciar projetos.</li>
     <li>☕ Java, Python – Estou estudando Java e python para entender programação orientada a objetos e desenvolvimento backend.</li>
     <li>🎓 Concluí um curso profissionalizante de Programação Orientada a Objetos pela Fundação Bradesco.</li>
-    <li>💻 no momento, o front-end é onde eu mais tenho conhecimento.</li>
+    <li>💻 no momento, o front-end é onde eu mais tenho conhecimento, Pretendo expandir meu conhecimento em UI/UX para aprimorar a interface e a performance do software, garantindo que os usuários tenham a melhor experiência possível ao interagir com o site/aplicativo e vê-lo da melhor maneira.</li>
   </ul>
-</section>
-
-<section>
-  <h2>🚀 Meus Objetivos e Como Estou Trabalhando para Alcançá-los</h2>
-  <p>Enquanto continuo crescendo como um desenvolvedor aprendiz, meus objetivos são aprimorar minhas habilidades em front-end e back-end. Estou disposto a dedicar horas do meu tempo livre para estudar e aprender mais sobre a área. Também quero colaborar com outros desenvolvedores, contribuir para projetos relevantes e, quem sabe, inspirar outras pessoas que estão começando assim como eu.</p>
 </section>
 
 <section class="projects">
@@ -73,12 +68,8 @@
 
 <section class="technologies">
   <h3>💡 Tecnologias & Ferramentas</h3>
-  <div>
-    <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white" alt="Badge HTML5">
-    <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white" alt="Badge CSS3">
-    <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black" alt="Badge JavaScript">
-    <img src="https://img.shields.io/badge/Java-007396?style=flat&logo=java&logoColor=white" alt="Badge Java">
-    <img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white" alt="Badge GitHub">
-    <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white" alt="Badge Python">
-  </div>
-</section>
+<h3 align="left">Languages and Tools:</h3>
+<p align="left"> <a href="https://www.w3schools.com/css/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg" alt="css3" width="40" height="40"/> </a> <a href="https://www.w3.org/html/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg" alt="html5" width="40" height="40"/> </a> <a href="https://www.java.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg" alt="java" width="40" height="40"/> </a> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="40" height="40"/> </a> <a href="https://www.python.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="python" width="40" height="40"/> </a> </p>
+
+<p><img align="center" src="https://github-readme-stats.vercel.app/api/top-langs?username=billafranca&show_icons=true&theme=dark&locale=en&layout=compact" alt="billafranca" /></p>
+
