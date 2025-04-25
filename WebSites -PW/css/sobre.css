@@ -98,33 +98,36 @@ h1, a{
 h1, a:hover{
     opacity: 0.8;
 }
-.containers, .container, .uso, title:hover{
-    transform: scale(1.1);
-}
+
 .containers{
     position: absolute;
-    left: 0;
-    top: 210%;
+    left: 6%;
+    top: 165%;
     background-color: #f9e79f;
     border-radius: 10px;
     width: 25%;
 }
 .container{
     position: absolute;
-    left: 50%;
-    top: 210%;
+    left: 37%;
+    top: 165%;
     background-color: #f9e79f;
     border-radius: 10px;
     width: 25%;
 }
 .uso{
     position: absolute;
-    left: 60%;
-    padding: 30px;
-    top: 210%;
+    left: 70%;
+    top: 165%;
     width: 25%;
+    border-radius: 10px;
 }
-.containers, .container, .uso, title{
+.containers, .container, .uso, .title{
     justify-content: space-between;
     background-color: #f9e79f;
+    transition: all 0.9s ease;
+    cursor: pointer;
+}
+.containers, .container, .uso, .title:hover{
+    transform: scale(1.1);
 }
