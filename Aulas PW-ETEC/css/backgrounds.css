@@ -1,21 +1,26 @@
 body{
-    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzqoYA7FFJno0GTGR2rwR2zA9istIVMvlxRw&s);
+    background-image: url(https://i0.wp.com/diariodotransporte.com.br/wp-content/uploads/2017/09/onibus_rio_janeiro.jpg?fit=653%2C393&ssl=1);
     background-attachment: fixed;
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
 p{
     text-align: center;
-    background-color: white;
+    background-color: rgb(152, 164, 240);
     color: black;
-    border-radius: 30px;
-    width: 20%;
-    margin: 0 auto;
+    border-radius: 10px;
+    font-style: italic;
+    width: 30%;
+    position: absolute;
+    top: 38%;
+    left: 35%;
 }
 input[type="number"] {
     position: absolute;
-    top: 20%;
-    width: 17%;
+    font-style: italic;
+    top: 50%;
+    left: 30%;
+    width: 20%;
     padding: 5px;
     border: 2px solid #ccc;
     border-radius: 5px;
@@ -23,8 +28,9 @@ input[type="number"] {
 }
 button[type="button"]{
     position: absolute;
-    top: 20%;
-    left: 18%;
+    font-style: italic;
+    top: 50%;
+    left: 51%;
     width: 20%;
     padding: 5px;
     border: 2px solid #ccc;
@@ -35,3 +41,5 @@ button[type="button"]:hover{
     background-color: lightgreen;
     color: #fff;
 }
+
+

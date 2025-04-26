@@ -12,13 +12,14 @@ enviar.addEventListener("click", function() {
 
     if (nota <= 5) {
         number.style.backgroundColor = "red";
-        mensagem = "Como você não gosta do circular de Madureira??!";
+        mensagem = "você não gosta? que péssimo gosto em rapaz!";
     } else if (nota <= 7) {
         number.style.backgroundColor = "yellow";
-        mensagem = "Razoável? Ent o tudo bem, mas vamos melhorar os gostos!";
+        mensagem = "Razoável? Então tudo bem, mas vamos melhorar os gostos!";
     } else {
         number.style.backgroundColor = "green";
-        mensagem = "Impossível não gostar do circular de Madureira, não tem jeito!";
+        mensagem = "aí sim, os ônibus do rio são muito mídia, não tem jeito!";
+        window.location.href = "https://pt.wikipedia.org/wiki/Hist%C3%B3ria_do_%C3%B4nibus_urbano_no_Rio_de_Janeiro";
     }
 
     alert(mensagem);
