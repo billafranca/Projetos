@@ -10,6 +10,7 @@ public class Atvum {
         double resultado = eval(expressao);
 
         System.out.println("resultado: " + resultado);
+        sc.close();
     }
 
     public static double eval(final String str) {
@@ -32,7 +33,11 @@ public class Atvum {
             double parse() {
                 nextChar();
                 double x = 0;
-                int start = this.pos;
+                int start = pos;
+                if (Character.isDigit(ch) || ch == '.') {
+                    while (Character.isDigit(ch) || ch == '.') nextChar();
+                    x = Double.parseDouble(str.substring(start, pos));
+                }
                 if (pos >= 0) {
                     int endpos = this.pos;
                     while (endpos < str.length() && Character.isDigit(str.charAt(endpos))) endpos++;

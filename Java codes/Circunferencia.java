@@ -10,5 +10,6 @@ public class Circunferencia {
 
         double area = PI * (raio * raio);
         System.out.println("The area of circle is: " + area);
+        scanner.close();
     }
 }

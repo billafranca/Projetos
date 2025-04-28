@@ -9,6 +9,7 @@ public class Salarioebugs {
 
         System.out.print("Digite a quantidade de bugs que você resolveu: ");
         int qntdbugs = scanner.nextInt();
+        scanner.close();
 
         double bonus = getBonus(salario, qntdbugs);
 
