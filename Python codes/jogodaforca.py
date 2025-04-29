@@ -26,7 +26,7 @@ while attempts > 0:
         print("Parabéns você acertou!")
         break
 else:
-    print("You lost!")
+    print("você perdeu men!")
 
 print("\n" + ''.join(hidden_word))
 
