@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function() {
       
         if (validateUsername(username) && validatePassword(password)) {
             alert("Nome de usuário e senha válidos. Redirecionando...");
-            window.location.href = "2pag.html"; 
+            window.location.href = "sobremim.html"; 
         } else {
             alert("Por favor, insira um nome de usuário válido e uma senha com pelo menos 6 caracteres, incluindo letra maiúscula.");
         }
