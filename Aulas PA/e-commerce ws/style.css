@@ -69,7 +69,10 @@ center{
 }
 
 .price {
+    position: absolute;
     font-size: 30px;
+    top: 12%;
+    left: 24%;
 }
 
 #carrinho {
