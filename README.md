@@ -16,9 +16,9 @@
   <h2>🧠 O que Estou Aprendendo</h2>
   <ul>
     <li>💻 HTML, CSS e JavaScript – Utilizo essas tecnologias para criar páginas web simples e responsivas, e também para estudar front-end com o intuito de iniciar projetos.</li>
-    <li>☕ Java, Python – Estou estudando Java e python para entender programação orientada a objetos e desenvolvimento backend.</li>
-    <li>🎓 Concluí um curso profissionalizante de Programação Orientada a Objetos pela Fundação Bradesco.</li>
-    <li>💻 no momento, o front-end é onde eu mais tenho conhecimento, Pretendo expandir meu conhecimento em UI/UX para aprimorar a interface e a performance do software, garantindo que os usuários tenham a melhor experiência possível ao interagir com o site/aplicativo e vê-lo da melhor maneira.</li>
+    <li>☕ Java, Python e javaScript – Estou estudando Java, python e javaScript para entender programação orientada a objetos e desenvolvimento backend.</li>
+    <li>🎓 Concluí um curso profissionalizante de Programação Orientada a Objetos pela Fundação Bradesco. Onde o foco é Java.</li>
+    <li>💻 Pretendo expandir meu conhecimento em UI/UX para aprimorar a interface e a performance do software, garantindo que os usuários tenham a melhor experiência possível ao interagir com o site/aplicativo e vê-lo da melhor maneira.</li>
   </ul>
 </section>
 
@@ -34,24 +34,16 @@
     </thead>
     <tbody>
       <tr>
-        <td><strong>Aplicativo To-Do List</strong></td>
-        <td>Uma lista de tarefas simples construída com JavaScript</td>
-        <td>HTML, CSS, JavaScript</td>
       </tr>
       <tr>
-        <td><strong>Página de Entrada</strong></td>
-        <td>Uma página de login bem básica com alguns critérios</td>
-        <td>HTML, CSS, JavaScript</td>
-      </tr>
-      <tr>
-        <td><strong>API e pyautogui</strong></td>
-        <td>simples código utilizando pyautogui (em python) e requisição de API em java</td>
-        <td>Java, Python</td>
+        <td><strong>Projetos Pessoais</strong></td>
+        <td>simples projetos utilizando linguagens de desenvolvimento front e back-end. </td>
+        <td>Java, Python, javaScript, html/css</td>
       </tr>
       <tr>
         <td><strong>Snippets de Aprendizado</strong></td>
         <td>Exemplos de código e desafios do meu curso técnico na ETEC</td>
-        <td>Java, JavaScript, Github</td>
+        <td>Java, JavaScript, Github, e linguagens de (POO)</td>
       </tr>
     </tbody>
   </table>
