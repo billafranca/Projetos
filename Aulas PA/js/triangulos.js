@@ -6,14 +6,14 @@ lado3=parseFloat(prompt("digite o valor do lado3: "));
 
 if (lado1 == lado2 &  lado3 == lado1){
     console.log("equilátero");
-    alert("equilátero");
+    console.log("equilátero");
 }
 else if(lado1 != lado2  &  lado3 != lado1){
     console.log("escaleno");
-    alert("escaleno");
+    console.log("escaleno");
 }
 else{
     console.log("isosceles");
-    alert("isosceles");
+    console.log("isosceles");
 }
     

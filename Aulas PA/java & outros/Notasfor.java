@@ -8,13 +8,15 @@ public class Notasfor{
         double notas = 0.0;
         double media = 0.0;
 
-        for(int i = 0; i < 4; i++)("insira um número: "+(i+1)+":"){
+        for(int i = 0; i < 4; i++){
+            System.out.println("insira um número: "+(i+1)+":")
             somanotas += notas;
             if(notas <0 && >10){
-                System.out.println("inválido")
+                System.out.println("inválido");
             }
         }
         media = notas /4;
-        System.out.println("sua média é: ", media)
+        System.out.println("sua média é: ", media);
     }
+    sc.close();
 }

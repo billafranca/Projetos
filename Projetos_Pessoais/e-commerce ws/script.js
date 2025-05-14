@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let carrinho = 0.00;
 
     add_com.addEventListener("click", function() {
-        alert("Computador adicionado ao carinho");
+        console.log("Computador adicionado ao carinho");
         carrinho += comp_preco;
         amt_com += 1;
         if (amt_tv == 0) {
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 
     add_tv.addEventListener("click", function() {
-        alert("Televisão adicionado ao carinho");
+        console.log("Televisão adicionado ao carinho");
         carrinho += tv_preco;
         amt_tv += 1;
         if (amt_com == 0) {

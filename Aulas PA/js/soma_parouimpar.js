@@ -12,4 +12,4 @@ for (let i = 1; i <= 100; i ++) {
 
 (soma_impares > soma_pares) ? maior = "Soma dos Impares" : maior = "Soma dos Pares";
 
-alert("Soma dos números pares: " + soma_pares + "\nSoma dos números impares: " + soma_impares + "\nMaior soma: " + maior);
+console.log("Soma dos números pares: " + soma_pares + "\nSoma dos números impares: " + soma_impares + "\nMaior soma: " + maior);

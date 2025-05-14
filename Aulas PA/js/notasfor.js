@@ -6,11 +6,11 @@ for(let i = 0; i <4; i++){
     somaNotas += notas
 
     if(notas >10 || nota < 0 || !notas.isNaN()){
-        alert("inválidas")
+        console.log("inválidas")
         i -=1
     }
 
     }
     media = notas / 4;
-    alert("sua média é: "+ media);
+    console.log("sua média é: "+ media);
     

@@ -21,7 +21,7 @@
 
     dividir.addEventListener("click", function(){
         if(Number(number2.value) === 0) {
-            alert("Não é possível dividir por zero.");
+            console.log("Não é possível dividir por zero.");
         } else {
             const resultado = Number(number1.value) / Number(number2.value);
             resultadoElement.textContent = `O resultado: ${resultado}`;

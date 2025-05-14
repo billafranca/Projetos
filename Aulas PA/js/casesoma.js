@@ -6,27 +6,27 @@ function escolha() {
             var num1 = prompt("Digite o primeiro número:");
             var num2 = prompt("Digite o segundo número:");
             var resultado = parseFloat(num1) + parseFloat(num2);
-            alert("O resultado da soma é: " + resultado);    
+            console.log("O resultado da soma é: " + resultado);    
             break;
         case "2":
             var num1 = prompt("Digite o primeiro número:");
             var num2 = prompt("Digite o segundo número:");
             var resultado = parseFloat(num1) - parseFloat(num2);
-            alert("O resultado da subtração é: " + resultado);    
+            console.log("O resultado da subtração é: " + resultado);    
             break;
         case "3":
             var num1 = prompt("Digite o primeiro número:");
             var num2 = prompt("Digite o segundo número:");
             var resultado = parseFloat(num1) * parseFloat(num2);
-            alert("O resultado da multiplicação é: " + resultado);    
+            console.log("O resultado da multiplicação é: " + resultado);    
             break;
         case "4":
             var num1 = prompt("Digite o primeiro número:");
             var num2 = prompt("Digite o segundo número:");
             var resultado = parseFloat(num1) / parseFloat(num2);
-            alert("O resultado da divisão é: " + resultado);    
+            console.log("O resultado da divisão é: " + resultado);    
             break;
         default:
-            alert("Opção inválida!");
+            console.log("Opção inválida!");
     }
 }

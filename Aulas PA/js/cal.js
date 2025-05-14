@@ -4,7 +4,7 @@ try {
     if (isNaN(result)) {
         throw "Operação inválida";
     }
-    alert(result);
+    console.log(result);
 } catch (e) {
-    alert("Operação inválida");
+    console.log("Operação inválida");
 }

@@ -6,13 +6,13 @@ document.addEventListener("DOMContentLoaded", function() {
         nota = parseFloat(nota);
         
         if (nota < 0 || nota > 10) {
-            alert("Por favor, insira um número válido entre 0 e 10.");
+            console.log("Por favor, insira um número válido entre 0 e 10.");
         } else if (nota <= 5) {
-            alert("Que pena, mas obrigado!");
+            console.log("Que pena, mas obrigado!");
         } else if (nota <= 7) {
-            alert("Bom, obrigado!");
+            console.log("Bom, obrigado!");
         } else {
-            alert("Muito obrigado!");
+            console.log("Muito obrigado!");
         }
     });
 });
