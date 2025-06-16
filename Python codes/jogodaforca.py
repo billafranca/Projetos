@@ -7,7 +7,7 @@ chosen_word = random.choice(words)
 hidden_word = ['_'] * len(chosen_word)
 attempts = 6
 
-print("Jogo da forca do bragobas")
+print("---- Jogo da Forca ----")
 
 while attempts > 0:
     print("\n" + ''.join(hidden_word))
