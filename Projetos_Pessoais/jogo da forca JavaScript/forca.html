@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Jogo da Forca</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="forca.css">
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+        #palavra { font-size: 2em; letter-spacing: 10px; }
+        #mensagem { margin-top: 20px; font-weight: bold; }
+        input[type="text"] { font-size: 1.2em; width: 40px; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <h1>Jogo da Forca</h1>
+    <div id="palavra">_ _ _ _</div>
+
+    <p>Tentativas restantes: <span id="tentativas">6</span></p>
+
+    <input type="text" id="letra" maxlength="1" autofocus>
+    <button id="tentar" onclick="tentar()">Tentar</button>
+    <button id="reiniciar" onclick="reiniciar()">Reiniciar</button>
+    <button id="mostrarDica" onclick="mostrarDica()">Dica</button>
+    <button id="mostrarPalavra"onclick="mostrarPalavra()">Mostrar Palavra</button>
+    <button id="limpar" onclick="limpar()">limpar</button>
+    <p id="mensagem"></p>
+    <script src="forca.js"></script>
+</body>
+</html>
