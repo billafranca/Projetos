@@ -306,6 +306,7 @@ footer {
 
 .ds {
     margin-top: 130px;
+    margin-left: 20px;
 }
 
 .adm {
@@ -318,8 +319,9 @@ footer {
     margin-right: auto;
 }
 .adm{
-    height: 380px;
-    width: 50%;
+    height: 360px;
+    width:45%;
+    margin-left: 40px;
 }
 #ensino {
     margin: 0 auto;
