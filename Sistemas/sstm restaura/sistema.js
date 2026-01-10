@@ -3,7 +3,7 @@ const LS_KEY = 'rest_pedidos_v1';
 let orders = [];
 let currentItems = [];
 
-// elementos
+// ELEMENTOS
 const inpTable = document.getElementById('inpTable');
 const inpItem = document.getElementById('inpItem');
 const inpQty = document.getElementById('inpQty');
@@ -26,33 +26,31 @@ const countNew = document.getElementById('countNew');
 const countReady = document.getElementById('countReady');
 const countDone = document.getElementById('countDone');
 
+const totalDayEl = document.getElementById('totalDay');
+const btnCloseDay = document.getElementById('btnCloseDay');
+
 const btnClearAll = document.getElementById('btnClearAll');
 const btnExport = document.getElementById('btnExport');
 const btnImport = document.getElementById('btnImport');
 const fileInput = document.getElementById('fileInput');
 
-// init
+// INIT
 load();
 render();
 
-// eventos
+// EVENTOS
 btnAddItem.onclick = addCurrentItem;
 btnSubmit.onclick = submitOrder;
 btnClear.onclick = clearForm;
 filterStatus.onchange = render;
 searchBox.oninput = render;
-btnClearAll.onclick = () => {
-    if (confirm('Apagar todos os pedidos?')) {
-        orders = [];
-        save();
-        render();
-    }
-};
+btnClearAll.onclick = clearAll;
 btnExport.onclick = exportJSON;
 btnImport.onclick = () => fileInput.click();
 fileInput.onchange = importJSON;
+btnCloseDay.onclick = fecharCaixa;
 
-// funções
+// FUNÇÕES
 function addCurrentItem(){
     const name = inpItem.value.trim();
     const qty = parseInt(inpQty.value) || 1;
@@ -63,16 +61,7 @@ function addCurrentItem(){
         return;
     }
 
-    const found = currentItems.find(
-        it => it.name.toLowerCase() === name.toLowerCase() && it.price === price
-    );
-
-    if(found){
-        found.qty += qty;
-    } else {
-        currentItems.push({ name, qty, price });
-    }
-
+    currentItems.push({ name, qty, price });
     inpItem.value = '';
     inpQty.value = 1;
     inpPreco.value = '';
@@ -81,48 +70,36 @@ function addCurrentItem(){
 
 function renderCurrentItems(){
     currentItemsEl.innerHTML = '';
-
-    currentItems.forEach((it, idx)=>{
-        const div = document.createElement('div');
-        div.className = 'item-pill';
-        div.innerHTML = `
-            ${escapeHtml(it.name)} x${it.qty} — R$ ${(it.qty * it.price).toFixed(2)}
-            <button class="ghost" data-idx="${idx}">Rem</button>
+    currentItems.forEach((it, i)=>{
+        currentItemsEl.innerHTML += `
+            <div class="item-pill">
+                ${escapeHtml(it.name)} x${it.qty} — R$ ${(it.qty * it.price).toFixed(2)}
+                <button onclick="removeItem(${i})">Rem</button>
+            </div>
         `;
-        currentItemsEl.appendChild(div);
     });
-
-    [...currentItemsEl.querySelectorAll('button')].forEach(btn=>{
-        btn.onclick = () => {
-            currentItems.splice(btn.dataset.idx, 1);
-            renderCurrentItems();
-        };
-    });
-
     updateTotal();
 }
 
+function removeItem(i){
+    currentItems.splice(i,1);
+    renderCurrentItems();
+}
+
 function updateTotal(){
-    const total = currentItems.reduce(
-        (sum, it) => sum + it.qty * it.price, 0
-    );
+    const total = currentItems.reduce((s,it)=>s+it.qty*it.price,0);
     totalPriceEl.textContent = total.toFixed(2);
 }
 
 function submitOrder(){
-    if(currentItems.length === 0){
-        alert('Adicione itens');
-        return;
-    }
+    if(currentItems.length===0) return alert('Sem itens');
 
-    const total = currentItems.reduce(
-        (sum, it) => sum + it.qty * it.price, 0
-    );
+    const total = currentItems.reduce((s,it)=>s+it.qty*it.price,0);
 
     orders.unshift({
         id: Date.now(),
         table: inpTable.value || 'Sem identificação',
-        items: currentItems.map(it => ({ ...it })),
+        items: [...currentItems],
         notes: inpNotes.value,
         total,
         time: new Date().toISOString(),
@@ -135,91 +112,98 @@ function submitOrder(){
 }
 
 function clearForm(){
-    inpTable.value = '';
-    inpItem.value = '';
-    inpQty.value = 1;
-    inpPreco.value = '';
-    inpNotes.value = '';
-    currentItems = [];
+    inpTable.value='';
+    inpNotes.value='';
+    currentItems=[];
     renderCurrentItems();
 }
 
 function render(){
-    ordersList.innerHTML = '';
-    let nNew=0, nReady=0, nDone=0;
+    ordersList.innerHTML='';
+    let nNew=0,nReady=0,nDone=0;
 
     orders.forEach(o=>{
-        if(o.status === 'new') nNew++;
-        else if(o.status === 'ready') nReady++;
+        if(o.status==='new') nNew++;
+        else if(o.status==='ready') nReady++;
         else nDone++;
 
-        const div = document.createElement('div');
-        div.className = 'card';
-        div.innerHTML = `
-            <strong>${escapeHtml(o.table)}</strong><br>
-            ${o.items.map(it =>
-                `${escapeHtml(it.name)} x${it.qty} — R$ ${(it.qty * it.price).toFixed(2)}`
-            ).join('<br>')}
-            <div><strong>Total: R$ ${o.total.toFixed(2)}</strong></div>
-            <button onclick="toggleStatus(${o.id})">Status</button>
-            <button onclick="removeOrder(${o.id})">Excluir</button>
+        ordersList.innerHTML += `
+            <div class="card">
+                <strong>${escapeHtml(o.table)}</strong><br>
+                ${o.items.map(it=>`${escapeHtml(it.name)} x${it.qty}`).join('<br>')}
+                <div><strong>Total: R$ ${o.total.toFixed(2)}</strong></div>
+                <button onclick="toggleStatus(${o.id})">Status</button>
+                <button onclick="removeOrder(${o.id})">Excluir</button>
+            </div>
         `;
-        ordersList.appendChild(div);
     });
 
     totalCount.textContent = orders.length;
     countNew.textContent = nNew;
     countReady.textContent = nReady;
     countDone.textContent = nDone;
+
+    totalDayEl.textContent = calcularTotalDoDia().toFixed(2);
 }
 
 function toggleStatus(id){
-    const o = orders.find(x => x.id === id);
+    const o = orders.find(x=>x.id===id);
     if(!o) return;
-    o.status = o.status === 'new' ? 'ready' : o.status === 'ready' ? 'done' : 'new';
+    o.status = o.status==='new'?'ready':o.status==='ready'?'done':'new';
+    save(); render();
+}
+
+function calcularTotalDoDia(){
+    const hoje = new Date().toISOString().slice(0,10);
+    return orders
+        .filter(o=>o.status==='done' && o.time.slice(0,10)===hoje)
+        .reduce((s,o)=>s+o.total,0);
+}
+
+function fecharCaixa(){
+    const total = calcularTotalDoDia();
+    if(!confirm(`Fechar o dia com R$ ${total.toFixed(2)}?`)) return;
+
+    orders = orders.filter(o=>o.status!=='done');
     save();
     render();
 }
 
 function removeOrder(id){
-    if(confirm('Excluir pedido?')){
-        orders = orders.filter(o => o.id !== id);
-        save();
-        render();
+    orders = orders.filter(o=>o.id!==id);
+    save(); render();
+}
+
+function clearAll(){
+    if(confirm('Apagar tudo?')){
+        orders=[]; save(); render();
     }
 }
 
-function save(){
-    localStorage.setItem(LS_KEY, JSON.stringify(orders));
-}
-
+function save(){ localStorage.setItem(LS_KEY, JSON.stringify(orders)); }
 function load(){
     const raw = localStorage.getItem(LS_KEY);
     if(raw) orders = JSON.parse(raw);
 }
 
 function exportJSON(){
-    const blob = new Blob([JSON.stringify(orders, null, 2)], {type:'application/json'});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'pedidos.json';
+    const blob = new Blob([JSON.stringify(orders,null,2)],{type:'application/json'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='pedidos.json';
     a.click();
 }
 
 function importJSON(e){
-    const file = e.target.files[0];
-    if(!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-        orders = JSON.parse(reader.result);
-        save();
-        render();
-    };
-    reader.readAsText(file);
+    const f=e.target.files[0];
+    if(!f) return;
+    const r=new FileReader();
+    r.onload=()=>{orders=JSON.parse(r.result);save();render();};
+    r.readAsText(f);
 }
 
 function escapeHtml(s){
-    return String(s).replace(/[&<>"']/g, m =>
-        ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])
-    );
+    return String(s).replace(/[&<>"']/g,m=>(
+        {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]
+    ));
 }
