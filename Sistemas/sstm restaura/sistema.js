@@ -2,6 +2,7 @@ const LS_KEY = 'rest_pedidos_v1';
 
 let orders = [];
 let currentItems = [];
+let editingOrderId = null;
 
 // ELEMENTOS
 const inpTable = document.getElementById('inpTable');
@@ -40,7 +41,7 @@ render();
 
 // EVENTOS
 btnAddItem.onclick = addCurrentItem;
-btnSubmit.onclick = submitOrder;
+btnSubmit.onclick = submitOrUpdateOrder;
 btnClear.onclick = clearForm;
 filterStatus.onchange = render;
 searchBox.oninput = render;
@@ -62,18 +63,18 @@ function addCurrentItem(){
     }
 
     currentItems.push({ name, qty, price });
-    inpItem.value = '';
-    inpQty.value = 1;
-    inpPreco.value = '';
+    inpItem.value='';
+    inpQty.value=1;
+    inpPreco.value='';
     renderCurrentItems();
 }
 
 function renderCurrentItems(){
-    currentItemsEl.innerHTML = '';
-    currentItems.forEach((it, i)=>{
-        currentItemsEl.innerHTML += `
+    currentItemsEl.innerHTML='';
+    currentItems.forEach((it,i)=>{
+        currentItemsEl.innerHTML+=`
             <div class="item-pill">
-                ${escapeHtml(it.name)} x${it.qty} — R$ ${(it.qty * it.price).toFixed(2)}
+                ${escapeHtml(it.name)} x${it.qty} — R$ ${(it.qty*it.price).toFixed(2)}
                 <button onclick="removeItem(${i})">Rem</button>
             </div>
         `;
@@ -91,30 +92,58 @@ function updateTotal(){
     totalPriceEl.textContent = total.toFixed(2);
 }
 
-function submitOrder(){
+function submitOrUpdateOrder(){
     if(currentItems.length===0) return alert('Sem itens');
 
     const total = currentItems.reduce((s,it)=>s+it.qty*it.price,0);
 
-    orders.unshift({
-        id: Date.now(),
-        table: inpTable.value || 'Sem identificação',
-        items: [...currentItems],
-        notes: inpNotes.value,
-        total,
-        time: new Date().toISOString(),
-        status: 'new'
-    });
+    if(editingOrderId){
+        const o = orders.find(x=>x.id===editingOrderId);
+        if(!o) return;
+
+        o.table = inpTable.value || 'Sem identificação';
+        o.items = [...currentItems];
+        o.notes = inpNotes.value;
+        o.total = total;
+
+        editingOrderId = null;
+        btnSubmit.textContent = 'Registrar Pedido';
+    } else {
+        orders.unshift({
+            id: Date.now(),
+            table: inpTable.value || 'Sem identificação',
+            items: [...currentItems],
+            notes: inpNotes.value,
+            total,
+            time: new Date().toISOString(),
+            status: 'new'
+        });
+    }
 
     save();
     clearForm();
     render();
 }
 
+function editOrder(id){
+    const o = orders.find(x=>x.id===id);
+    if(!o) return;
+
+    editingOrderId = id;
+    inpTable.value = o.table;
+    inpNotes.value = o.notes;
+    currentItems = [...o.items];
+
+    btnSubmit.textContent = 'Atualizar Pedido';
+    renderCurrentItems();
+}
+
 function clearForm(){
     inpTable.value='';
     inpNotes.value='';
     currentItems=[];
+    editingOrderId=null;
+    btnSubmit.textContent='Registrar Pedido';
     renderCurrentItems();
 }
 
@@ -127,12 +156,13 @@ function render(){
         else if(o.status==='ready') nReady++;
         else nDone++;
 
-        ordersList.innerHTML += `
+        ordersList.innerHTML+=`
             <div class="card">
                 <strong>${escapeHtml(o.table)}</strong><br>
                 ${o.items.map(it=>`${escapeHtml(it.name)} x${it.qty}`).join('<br>')}
                 <div><strong>Total: R$ ${o.total.toFixed(2)}</strong></div>
                 <button onclick="toggleStatus(${o.id})">Status</button>
+                <button onclick="editOrder(${o.id})">Editar</button>
                 <button onclick="removeOrder(${o.id})">Excluir</button>
             </div>
         `;
@@ -176,7 +206,9 @@ function removeOrder(id){
 
 function clearAll(){
     if(confirm('Apagar tudo?')){
-        orders=[]; save(); render();
+        orders=[];
+        save();
+        render();
     }
 }
 
