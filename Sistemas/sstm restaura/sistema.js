@@ -1,8 +1,15 @@
 const LS_KEY = 'rest_pedidos_v1';
+const LS_CASH_KEY = 'rest_caixa_fechado_v1';
+
+const btn = document.getElementById('btnContato');
+btn.addEventListener('click', () => {
+    alert("Whatsapp 🤙 : (11) 97693-9285\nEmail 📧 : quintaldocabral@gmail.com\nInstagram : @quintaldocabral");
+});
 
 let orders = [];
 let currentItems = [];
 let editingOrderId = null;
+let closedDays = [];
 
 // ELEMENTOS
 const inpTable = document.getElementById('inpTable');
@@ -29,6 +36,7 @@ const countDone = document.getElementById('countDone');
 
 const totalDayEl = document.getElementById('totalDay');
 const btnCloseDay = document.getElementById('btnCloseDay');
+const closedDaysList = document.getElementById('closedDaysList');
 
 const btnClearAll = document.getElementById('btnClearAll');
 const btnExport = document.getElementById('btnExport');
@@ -52,29 +60,29 @@ fileInput.onchange = importJSON;
 btnCloseDay.onclick = fecharCaixa;
 
 // FUNÇÕES
-function addCurrentItem(){
+function addCurrentItem() {
     const name = inpItem.value.trim();
     const qty = parseInt(inpQty.value) || 1;
     const price = parseFloat(inpPreco.value.replace(',', '.'));
 
-    if(!name || isNaN(price) || price <= 0){
+    if (!name || isNaN(price) || price <= 0) {
         alert('Item ou preço inválido');
         return;
     }
 
     currentItems.push({ name, qty, price });
-    inpItem.value='';
-    inpQty.value=1;
-    inpPreco.value='';
+    inpItem.value = '';
+    inpQty.value = 1;
+    inpPreco.value = '';
     renderCurrentItems();
 }
 
-function renderCurrentItems(){
-    currentItemsEl.innerHTML='';
-    currentItems.forEach((it,i)=>{
-        currentItemsEl.innerHTML+=`
+function renderCurrentItems() {
+    currentItemsEl.innerHTML = '';
+    currentItems.forEach((it, i) => {
+        currentItemsEl.innerHTML += `
             <div class="item-pill">
-                ${escapeHtml(it.name)} x${it.qty} — R$ ${(it.qty*it.price).toFixed(2)}
+                ${escapeHtml(it.name)} x${it.qty} — R$ ${(it.qty * it.price).toFixed(2)}
                 <button onclick="removeItem(${i})">Rem</button>
             </div>
         `;
@@ -82,24 +90,24 @@ function renderCurrentItems(){
     updateTotal();
 }
 
-function removeItem(i){
-    currentItems.splice(i,1);
+function removeItem(i) {
+    currentItems.splice(i, 1);
     renderCurrentItems();
 }
 
-function updateTotal(){
-    const total = currentItems.reduce((s,it)=>s+it.qty*it.price,0);
+function updateTotal() {
+    const total = currentItems.reduce((s, it) => s + it.qty * it.price, 0);
     totalPriceEl.textContent = total.toFixed(2);
 }
 
-function submitOrUpdateOrder(){
-    if(currentItems.length===0) return alert('Sem itens');
+function submitOrUpdateOrder() {
+    if (currentItems.length === 0) return alert('Sem itens');
 
-    const total = currentItems.reduce((s,it)=>s+it.qty*it.price,0);
+    const total = currentItems.reduce((s, it) => s + it.qty * it.price, 0);
 
-    if(editingOrderId){
-        const o = orders.find(x=>x.id===editingOrderId);
-        if(!o) return;
+    if (editingOrderId) {
+        const o = orders.find(x => x.id === editingOrderId);
+        if (!o) return;
 
         o.table = inpTable.value || 'Sem identificação';
         o.items = [...currentItems];
@@ -125,9 +133,9 @@ function submitOrUpdateOrder(){
     render();
 }
 
-function editOrder(id){
-    const o = orders.find(x=>x.id===id);
-    if(!o) return;
+function editOrder(id) {
+    const o = orders.find(x => x.id === id);
+    if (!o) return;
 
     editingOrderId = id;
     inpTable.value = o.table;
@@ -138,28 +146,28 @@ function editOrder(id){
     renderCurrentItems();
 }
 
-function clearForm(){
-    inpTable.value='';
-    inpNotes.value='';
-    currentItems=[];
-    editingOrderId=null;
-    btnSubmit.textContent='Registrar Pedido';
+function clearForm() {
+    inpTable.value = '';
+    inpNotes.value = '';
+    currentItems = [];
+    editingOrderId = null;
+    btnSubmit.textContent = 'Registrar Pedido';
     renderCurrentItems();
 }
 
-function render(){
-    ordersList.innerHTML='';
-    let nNew=0,nReady=0,nDone=0;
+function render() {
+    ordersList.innerHTML = '';
+    let nNew = 0, nReady = 0, nDone = 0;
 
-    orders.forEach(o=>{
-        if(o.status==='new') nNew++;
-        else if(o.status==='ready') nReady++;
+    orders.forEach(o => {
+        if (o.status === 'new') nNew++;
+        else if (o.status === 'ready') nReady++;
         else nDone++;
 
-        ordersList.innerHTML+=`
+        ordersList.innerHTML += `
             <div class="card">
                 <strong>${escapeHtml(o.table)}</strong><br>
-                ${o.items.map(it=>`${escapeHtml(it.name)} x${it.qty}`).join('<br>')}
+                ${o.items.map(it => `${escapeHtml(it.name)} x${it.qty}`).join('<br>')}
                 <div><strong>Total: R$ ${o.total.toFixed(2)}</strong></div>
                 <button onclick="toggleStatus(${o.id})">Status</button>
                 <button onclick="editOrder(${o.id})">Editar</button>
@@ -174,68 +182,104 @@ function render(){
     countDone.textContent = nDone;
 
     totalDayEl.textContent = calcularTotalDoDia().toFixed(2);
+    renderClosedDays();
 }
 
-function toggleStatus(id){
-    const o = orders.find(x=>x.id===id);
-    if(!o) return;
-    o.status = o.status==='new'?'ready':o.status==='ready'?'done':'new';
+function toggleStatus(id) {
+    const o = orders.find(x => x.id === id);
+    if (!o) return;
+    o.status = o.status === 'new' ? 'ready' : o.status === 'ready' ? 'done' : 'new';
     save(); render();
 }
 
-function calcularTotalDoDia(){
-    const hoje = new Date().toISOString().slice(0,10);
+function calcularTotalDoDia() {
+    const hoje = new Date().toISOString().slice(0, 10);
     return orders
-        .filter(o=>o.status==='done' && o.time.slice(0,10)===hoje)
-        .reduce((s,o)=>s+o.total,0);
+        .filter(o => o.status === 'done' && o.time.slice(0, 10) === hoje)
+        .reduce((s, o) => s + o.total, 0);
 }
 
-function fecharCaixa(){
+function fecharCaixa() {
+    const hoje = new Date().toISOString().slice(0, 10);
     const total = calcularTotalDoDia();
-    if(!confirm(`Fechar o dia com R$ ${total.toFixed(2)}?`)) return;
 
-    orders = orders.filter(o=>o.status!=='done');
+    if (total === 0) {
+        alert('Nenhum valor para fechar hoje.');
+        return;
+    }
+
+    if (!confirm(`Fechar o dia ${hoje} com R$ ${total.toFixed(2)}?`)) return;
+
+    closedDays.unshift({
+        date: hoje,
+        total,
+        pedidos: orders.filter(o => o.status === 'done').length,
+        fechadoEm: new Date().toISOString()
+    });
+
+    orders = orders.filter(o => o.status !== 'done');
     save();
+    saveCash();
     render();
 }
 
-function removeOrder(id){
-    orders = orders.filter(o=>o.id!==id);
+function renderClosedDays() {
+    if (!closedDaysList) return;
+
+    if (!closedDays.length) {
+        closedDaysList.innerHTML = 'Nenhum caixa fechado ainda.';
+        return;
+    }
+
+    closedDaysList.innerHTML = closedDays.map(c => `
+        <div style="margin-bottom:8px">
+            📅 <strong>${c.date}</strong><br>
+            💰 R$ ${c.total.toFixed(2)}<br>
+            🧾 ${c.pedidos} pedidos
+        </div>
+    `).join('');
+}
+
+function removeOrder(id) {
+    orders = orders.filter(o => o.id !== id);
     save(); render();
 }
 
-function clearAll(){
-    if(confirm('Apagar tudo?')){
-        orders=[];
-        save();
-        render();
+function clearAll() {
+    if (confirm('Apagar tudo?')) {
+        orders = []; save(); render();
     }
 }
 
-function save(){ localStorage.setItem(LS_KEY, JSON.stringify(orders)); }
-function load(){
+function save() { localStorage.setItem(LS_KEY, JSON.stringify(orders)); }
+function saveCash() { localStorage.setItem(LS_CASH_KEY, JSON.stringify(closedDays)); }
+
+function load() {
     const raw = localStorage.getItem(LS_KEY);
-    if(raw) orders = JSON.parse(raw);
+    if (raw) orders = JSON.parse(raw);
+
+    const rawCash = localStorage.getItem(LS_CASH_KEY);
+    if (rawCash) closedDays = JSON.parse(rawCash);
 }
 
-function exportJSON(){
-    const blob = new Blob([JSON.stringify(orders,null,2)],{type:'application/json'});
-    const a=document.createElement('a');
-    a.href=URL.createObjectURL(blob);
-    a.download='pedidos.json';
+function exportJSON() {
+    const blob = new Blob([JSON.stringify(orders, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'pedidos.json';
     a.click();
 }
 
-function importJSON(e){
-    const f=e.target.files[0];
-    if(!f) return;
-    const r=new FileReader();
-    r.onload=()=>{orders=JSON.parse(r.result);save();render();};
+function importJSON(e) {
+    const f = e.target.files[0];
+    if (!f) return;
+    const r = new FileReader();
+    r.onload = () => { orders = JSON.parse(r.result); save(); render(); };
     r.readAsText(f);
 }
 
-function escapeHtml(s){
-    return String(s).replace(/[&<>"']/g,m=>(
-        {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]
+function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, m => (
+        { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]
     ));
 }
