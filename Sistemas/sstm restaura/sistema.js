@@ -269,6 +269,16 @@ function exportJSON() {
     a.download = 'pedidos.json';
     a.click();
 }
+const btnClearClosed = document.getElementById('btnClearClosed');
+
+btnClearClosed.onclick = () => {
+    if (!closedDays.length) return alert('Não há histórico para apagar.');
+    if (confirm('Deseja apagar todo o histórico de caixas fechados?')) {
+        closedDays = [];
+        saveCash();
+        render();
+    }
+};
 
 function importJSON(e) {
     const f = e.target.files[0];
