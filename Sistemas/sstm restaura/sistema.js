@@ -132,7 +132,58 @@ function submitOrUpdateOrder() {
     clearForm();
     render();
 }
+function printOrder(id) {
+    const o = orders.find(x => x.id === id);
+    if (!o) return;
 
+    const win = window.open('', '', 'width=300,height=600');
+
+    win.document.write(`
+        <html>
+        <head>
+            <style>
+                body {
+                    font-family: monospace;
+                    width: 280px;
+                }
+                h3 { text-align: center; margin: 5px 0; }
+                hr { border: none; border-top: 1px dashed #000; }
+                .line { display:flex; justify-content:space-between; }
+            </style>
+        </head>
+        <body>
+            <h3>Quintal do Cabral</h3>
+            <div style="text-align:center">Pedido</div>
+            <hr>
+            <strong>${o.table}</strong><br><br>
+
+            ${o.items.map(it => `
+                <div class="line">
+                    <span>${it.qty}x ${it.name}</span>
+                    <span>R$ ${(it.qty * it.price).toFixed(2)}</span>
+                </div>
+            `).join('')}
+
+            <hr>
+            <div class="line">
+                <strong>Total</strong>
+                <strong>R$ ${o.total.toFixed(2)}</strong>
+            </div>
+
+            <hr>
+            <div style="text-align:center;font-size:12px">
+                ${new Date(o.time).toLocaleString()}
+            </div>
+        </body>
+        </html>
+    `);
+
+    win.document.close();
+    win.focus();
+    win.print();
+    win.close();
+}
+<button onclick="printOrder(${o.id})">🖨 Imprimir</button>
 function editOrder(id) {
     const o = orders.find(x => x.id === id);
     if (!o) return;
