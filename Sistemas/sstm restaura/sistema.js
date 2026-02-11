@@ -145,15 +145,41 @@ function printOrder(id) {
         <html>
         <head>
             <style>
-                body { font-family: monospace; width:280px; margin:0; }
-                h3 { text-align:center; margin:6px 0; }
-                hr { border-top:1px dashed #000; }
-                .line { display:flex; justify-content:space-between; }
+                @page {
+                    size: 80mm auto;
+                    margin: 0;
+                }
+
+                body {
+                    font-family: monospace;
+                    width: 72mm;
+                    margin: 0;
+                    padding: 4mm;
+                }
+
+                h3 { 
+                    text-align: center; 
+                    margin: 4px 0; 
+                }
+
+                hr { 
+                    border: none; 
+                    border-top: 1px dashed #000; 
+                    margin: 6px 0; 
+                }
+
+                .line { 
+                    display: flex; 
+                    justify-content: space-between; 
+                    font-size: 13px; 
+                }
             </style>
         </head>
+
         <body>
             <h3>Quintal do Cabral</h3>
             <hr>
+
             <strong>${o.table}</strong><br><br>
 
             ${o.items.map(it => `
@@ -164,13 +190,15 @@ function printOrder(id) {
             `).join('')}
 
             <hr>
+
             <div class="line">
                 <strong>Total</strong>
                 <strong>R$ ${o.total.toFixed(2)}</strong>
             </div>
 
             <hr>
-            <div style="text-align:center;font-size:12px">
+
+            <div style="text-align:center;font-size:11px">
                 ${new Date(o.time).toLocaleString()}
             </div>
         </body>
@@ -179,9 +207,10 @@ function printOrder(id) {
 
     win.document.close();
     win.focus();
+    win.onafterprint = () => win.close();
     win.print();
-    win.close();
 }
+
 
 function render() {
     ordersList.innerHTML = '';
