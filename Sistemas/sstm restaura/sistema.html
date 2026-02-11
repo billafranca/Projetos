@@ -1,128 +1,121 @@
 <!doctype html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Sistema de Pedidos - Quintal do Cabral</title>
     <link rel="stylesheet" href="sistema.css" />
     <link rel="icon" href="logo.png" type="image/x-icon" />
-
 </head>
 
 <body>
-    
-    <header class="header">
-        <div class="wrap header-content">
-            <h1>Sistema de Pedidos - Quintal do Cabral</h1>
 
-            <nav>
-                <ul class="nav-list">
-                    <li>
-                        <button id="btnContato" type="button">Contato</button>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+<header class="header">
+    <div class="wrap header-content">
+        <h1>Sistema de Pedidos - Quintal do Cabral</h1>
+        <nav>
+            <ul class="nav-list">
+                <li>
+                    <button id="btnContato" type="button">Contato</button>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
 
-    <img id="logoR" src="logo.png" alt="Logo Quintal do Cabral" class="logo" />
-    <main class="wrap">
-        <div class="grid">
+<img id="logoR" src="logo.png" alt="Logo Quintal do Cabral" class="logo" />
 
-            <!-- FORMULÁRIO -->
-            <div>
-                <div class="card">
-                    <strong>Novo Pedido</strong>
+<main class="wrap">
+    <div class="grid">
 
-                    <label>Mesa / Cliente</label>
-                    <input id="inpTable" type="text" placeholder="Ex: Mesa 5 / Delivery João" />
+        <div>
+            <div class="card">
+                <strong>Novo Pedido</strong>
 
-                    <div class="row" style="margin-top:8px">
-                        <input id="inpItem" type="text" placeholder="Item" />
-                        <input id="inpQty" type="number" min="1" value="1" style="width:80px" />
-                        <input id="inpPreco" type="text" placeholder="Preço" style="width:90px" />
-                        <button id="btnAddItem">Adicionar</button>
-                    </div>
+                <label>Mesa / Cliente</label>
+                <input id="inpTable" type="text" placeholder="Ex: Mesa 5 / Delivery João" />
 
-                    <div id="currentItems" class="items-list"></div>
-
-                    <div style="background:#f0f3f7;padding:8px;border-radius:6px;margin-top:8px;text-align:right">
-                        <strong>Total do Pedido: R$ <span id="totalPrice">0.00</span></strong>
-                    </div>
-
-                    <label>Observações</label>
-                    <textarea id="inpNotes" rows="2"></textarea>
-
-                    <div style="display:flex;gap:8px;margin-top:10px">
-                        <button id="btnSubmit">Registrar Pedido</button>
-                        <button id="btnClear" class="ghost">Limpar</button>
-                    </div>
+                <div class="row" style="margin-top:8px">
+                    <input id="inpItem" type="text" placeholder="Item" />
+                    <input id="inpQty" type="number" min="1" value="1" style="width:80px" />
+                    <input id="inpPreco" type="text" placeholder="Preço" style="width:90px" />
+                    <button id="btnAddItem">Adicionar</button>
                 </div>
 
-                <div style="height:12px"></div>
+                <div id="currentItems" class="items-list"></div>
 
-                <!-- LISTA DE PEDIDOS -->
-                <div class="card">
-                    <strong>Pedidos</strong>
+                <div style="background:#f0f3f7;padding:8px;border-radius:6px;margin-top:8px;text-align:right">
+                    <strong>Total do Pedido: R$ <span id="totalPrice">0.00</span></strong>
+                </div>
 
-                    <div class="controls">
-                        <select id="filterStatus">
-                            <option value="all">Todos</option>
-                            <option value="new">Novos</option>
-                            <option value="ready">Prontos</option>
-                            <option value="done">Entregues</option>
-                        </select>
-                        <input id="searchBox" type="text" placeholder="Buscar" />
-                        <button id="btnClearAll" class="ghost">Limpar Tudo</button>
-                    </div>
+                <label>Observações</label>
+                <textarea id="inpNotes" rows="2"></textarea>
 
-                    <div id="ordersList" style="margin-top:8px"></div>
+                <div style="display:flex;gap:8px;margin-top:10px">
+                    <button id="btnSubmit">Registrar Pedido</button>
+                    <button id="btnClear" class="ghost">Limpar</button>
                 </div>
             </div>
 
-            <!-- RESUMO / CAIXA -->
-            <aside>
-                <div class="card">
-                    <strong>Resumo do Dia</strong>
+            <div style="height:12px"></div>
 
-                    <div class="small">Total de pedidos: <span id="totalCount">0</span></div>
-                    <div class="small">Novos: <span id="countNew">0</span></div>
-                    <div class="small">Prontos: <span id="countReady">0</span></div>
-                    <div class="small">Entregues: <span id="countDone">0</span></div>
+            <div class="card">
+                <strong>Pedidos</strong>
 
-                    <hr>
-
-                    <div style="font-size:18px">
-                        💰 <strong>Caixa do dia:</strong><br>
-                        R$ <span id="totalDay">0.00</span>
-                    </div>
-
-                    <button id="btnCloseDay" class="ghost" style="margin-top:10px">
-                        Fechar Caixa do Dia
-                    </button>
-                    <hr>
-
-                    <strong>Histórico de Caixas Fechados</strong>
-                    <div id="closedDaysList" style="margin-top:8px"></div>
-                    <hr>
-                    <button id="btnClearClosed" class="ghost">Apagar Histórico de Caixas</button>
-
-
-
-                    <hr>
-
-
-                    <button id="btnExport" class="ghost">Exportar JSON</button>
-                    <button id="btnImport" class="ghost">Importar JSON</button>
-                    <input id="fileInput" type="file" accept="application/json" hidden />
+                <div class="controls">
+                    <select id="filterStatus">
+                        <option value="all">Todos</option>
+                        <option value="new">Novos</option>
+                        <option value="ready">Prontos</option>
+                        <option value="done">Entregues</option>
+                    </select>
+                    <input id="searchBox" type="text" placeholder="Buscar" />
+                    <button id="btnClearAll" class="ghost">Limpar Tudo</button>
                 </div>
-            </aside>
 
+                <div id="ordersList" style="margin-top:8px"></div>
+            </div>
         </div>
-    </main>
 
-    <script src="sistema.js"></script>
+        <aside>
+            <div class="card">
+                <strong>Resumo do Dia</strong>
+
+                <div class="small">Total de pedidos: <span id="totalCount">0</span></div>
+                <div class="small">Novos: <span id="countNew">0</span></div>
+                <div class="small">Prontos: <span id="countReady">0</span></div>
+                <div class="small">Entregues: <span id="countDone">0</span></div>
+
+                <hr>
+
+                <div style="font-size:18px">
+                    💰 <strong>Caixa do dia:</strong><br>
+                    R$ <span id="totalDay">0.00</span>
+                </div>
+
+                <button id="btnCloseDay" class="ghost" style="margin-top:10px">
+                    Fechar Caixa do Dia
+                </button>
+
+                <hr>
+
+                <strong>Histórico de Caixas Fechados</strong>
+                <div id="closedDaysList" style="margin-top:8px"></div>
+
+                <hr>
+                <button id="btnClearClosed" class="ghost">Apagar Histórico de Caixas</button>
+
+                <hr>
+
+                <button id="btnExport" class="ghost">Exportar JSON</button>
+                <button id="btnImport" class="ghost">Importar JSON</button>
+                <input id="fileInput" type="file" accept="application/json" hidden />
+            </div>
+        </aside>
+
+    </div>
+</main>
+
+<script src="sistema.js"></script>
 </body>
-
 </html>

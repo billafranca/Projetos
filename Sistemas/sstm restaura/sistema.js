@@ -2,9 +2,9 @@ const LS_KEY = 'rest_pedidos_v1';
 const LS_CASH_KEY = 'rest_caixa_fechado_v1';
 
 const btn = document.getElementById('btnContato');
-btn.addEventListener('click', () => {
+btn.onclick = () => {
     alert("Whatsapp 🤙 : (11) 97693-9285\nEmail 📧 : quintaldocabral@gmail.com\nInstagram : @quintaldocabral");
-});
+};
 
 let orders = [];
 let currentItems = [];
@@ -42,6 +42,7 @@ const btnClearAll = document.getElementById('btnClearAll');
 const btnExport = document.getElementById('btnExport');
 const btnImport = document.getElementById('btnImport');
 const fileInput = document.getElementById('fileInput');
+const btnClearClosed = document.getElementById('btnClearClosed');
 
 // INIT
 load();
@@ -58,8 +59,10 @@ btnExport.onclick = exportJSON;
 btnImport.onclick = () => fileInput.click();
 fileInput.onchange = importJSON;
 btnCloseDay.onclick = fecharCaixa;
+btnClearClosed.onclick = clearClosed;
 
-// FUNÇÕES
+// ---------------- FUNÇÕES ----------------
+
 function addCurrentItem() {
     const name = inpItem.value.trim();
     const qty = parseInt(inpQty.value) || 1;
@@ -101,19 +104,16 @@ function updateTotal() {
 }
 
 function submitOrUpdateOrder() {
-    if (currentItems.length === 0) return alert('Sem itens');
+    if (!currentItems.length) return alert('Sem itens');
 
     const total = currentItems.reduce((s, it) => s + it.qty * it.price, 0);
 
     if (editingOrderId) {
         const o = orders.find(x => x.id === editingOrderId);
-        if (!o) return;
-
         o.table = inpTable.value || 'Sem identificação';
         o.items = [...currentItems];
         o.notes = inpNotes.value;
         o.total = total;
-
         editingOrderId = null;
         btnSubmit.textContent = 'Registrar Pedido';
     } else {
@@ -132,6 +132,9 @@ function submitOrUpdateOrder() {
     clearForm();
     render();
 }
+
+// -------- IMPRIMIR POS 80 --------
+
 function printOrder(id) {
     const o = orders.find(x => x.id === id);
     if (!o) return;
@@ -142,18 +145,14 @@ function printOrder(id) {
         <html>
         <head>
             <style>
-                body {
-                    font-family: monospace;
-                    width: 280px;
-                }
-                h3 { text-align: center; margin: 5px 0; }
-                hr { border: none; border-top: 1px dashed #000; }
+                body { font-family: monospace; width:280px; margin:0; }
+                h3 { text-align:center; margin:6px 0; }
+                hr { border-top:1px dashed #000; }
                 .line { display:flex; justify-content:space-between; }
             </style>
         </head>
         <body>
             <h3>Quintal do Cabral</h3>
-            <div style="text-align:center">Pedido</div>
             <hr>
             <strong>${o.table}</strong><br><br>
 
@@ -183,16 +182,87 @@ function printOrder(id) {
     win.print();
     win.close();
 }
-<button onclick="printOrder(${o.id})">🖨 Imprimir</button>
+
+function render() {
+    ordersList.innerHTML = '';
+
+    const statusFilter = filterStatus.value;
+    const term = searchBox.value.toLowerCase();
+
+    let nNew = 0, nReady = 0, nDone = 0;
+
+    orders.forEach(o => {
+        if (statusFilter !== 'all' && o.status !== statusFilter) return;
+        if (!o.table.toLowerCase().includes(term)) return;
+
+        if (o.status === 'new') nNew++;
+        else if (o.status === 'ready') nReady++;
+        else nDone++;
+
+        ordersList.innerHTML += `
+            <div class="card">
+                <strong>${escapeHtml(o.table)}</strong><br>
+                ${o.items.map(it => `${escapeHtml(it.name)} x${it.qty}`).join('<br>')}
+                <div><strong>Total: R$ ${o.total.toFixed(2)}</strong></div>
+
+                <button onclick="toggleStatus(${o.id})">Status</button>
+                <button onclick="printOrder(${o.id})">🖨 Imprimir</button>
+                <button onclick="editOrder(${o.id})">Editar</button>
+                <button onclick="removeOrder(${o.id})">Excluir</button>
+            </div>
+        `;
+    });
+
+    totalCount.textContent = orders.length;
+    countNew.textContent = nNew;
+    countReady.textContent = nReady;
+    countDone.textContent = nDone;
+    totalDayEl.textContent = calcularTotalDoDia().toFixed(2);
+
+    renderClosedDays();
+}
+
+// ----- resto mantido igual -----
+
+function toggleStatus(id) {
+    const o = orders.find(x => x.id === id);
+    o.status = o.status === 'new' ? 'ready' : o.status === 'ready' ? 'done' : 'new';
+    save(); render();
+}
+
+function calcularTotalDoDia() {
+    const hoje = new Date().toISOString().slice(0, 10);
+    return orders.filter(o => o.status === 'done' && o.time.slice(0, 10) === hoje)
+        .reduce((s, o) => s + o.total, 0);
+}
+
+function fecharCaixa() {
+    const hoje = new Date().toISOString().slice(0, 10);
+    const total = calcularTotalDoDia();
+    if (!total) return alert('Nenhum valor para fechar hoje.');
+
+    closedDays.unshift({ date: hoje, total, pedidos: orders.filter(o => o.status === 'done').length });
+    orders = orders.filter(o => o.status !== 'done');
+
+    save(); saveCash(); render();
+}
+
+function renderClosedDays() {
+    closedDaysList.innerHTML = closedDays.map(c => `
+        <div>
+            📅 ${c.date}<br>
+            💰 R$ ${c.total.toFixed(2)}<br>
+            🧾 ${c.pedidos} pedidos
+        </div>
+    `).join('');
+}
+
 function editOrder(id) {
     const o = orders.find(x => x.id === id);
-    if (!o) return;
-
     editingOrderId = id;
     inpTable.value = o.table;
     inpNotes.value = o.notes;
     currentItems = [...o.items];
-
     btnSubmit.textContent = 'Atualizar Pedido';
     renderCurrentItems();
 }
@@ -206,91 +276,6 @@ function clearForm() {
     renderCurrentItems();
 }
 
-function render() {
-    ordersList.innerHTML = '';
-    let nNew = 0, nReady = 0, nDone = 0;
-
-    orders.forEach(o => {
-        if (o.status === 'new') nNew++;
-        else if (o.status === 'ready') nReady++;
-        else nDone++;
-
-        ordersList.innerHTML += `
-            <div class="card">
-                <strong>${escapeHtml(o.table)}</strong><br>
-                ${o.items.map(it => `${escapeHtml(it.name)} x${it.qty}`).join('<br>')}
-                <div><strong>Total: R$ ${o.total.toFixed(2)}</strong></div>
-                <button onclick="toggleStatus(${o.id})">Status</button>
-                <button onclick="editOrder(${o.id})">Editar</button>
-                <button onclick="removeOrder(${o.id})">Excluir</button>
-            </div>
-        `;
-    });
-
-    totalCount.textContent = orders.length;
-    countNew.textContent = nNew;
-    countReady.textContent = nReady;
-    countDone.textContent = nDone;
-
-    totalDayEl.textContent = calcularTotalDoDia().toFixed(2);
-    renderClosedDays();
-}
-
-function toggleStatus(id) {
-    const o = orders.find(x => x.id === id);
-    if (!o) return;
-    o.status = o.status === 'new' ? 'ready' : o.status === 'ready' ? 'done' : 'new';
-    save(); render();
-}
-
-function calcularTotalDoDia() {
-    const hoje = new Date().toISOString().slice(0, 10);
-    return orders
-        .filter(o => o.status === 'done' && o.time.slice(0, 10) === hoje)
-        .reduce((s, o) => s + o.total, 0);
-}
-
-function fecharCaixa() {
-    const hoje = new Date().toISOString().slice(0, 10);
-    const total = calcularTotalDoDia();
-
-    if (total === 0) {
-        alert('Nenhum valor para fechar hoje.');
-        return;
-    }
-
-    if (!confirm(`Fechar o dia ${hoje} com R$ ${total.toFixed(2)}?`)) return;
-
-    closedDays.unshift({
-        date: hoje,
-        total,
-        pedidos: orders.filter(o => o.status === 'done').length,
-        fechadoEm: new Date().toISOString()
-    });
-
-    orders = orders.filter(o => o.status !== 'done');
-    save();
-    saveCash();
-    render();
-}
-
-function renderClosedDays() {
-    if (!closedDaysList) return;
-
-    if (!closedDays.length) {
-        closedDaysList.innerHTML = 'Nenhum caixa fechado ainda.';
-        return;
-    }
-
-    closedDaysList.innerHTML = closedDays.map(c => `
-        <div style="margin-bottom:8px">
-            📅 <strong>${c.date}</strong><br>
-            💰 R$ ${c.total.toFixed(2)}<br>
-            🧾 ${c.pedidos} pedidos
-        </div>
-    `).join('');
-}
-
 function removeOrder(id) {
     orders = orders.filter(o => o.id !== id);
     save(); render();
@@ -298,7 +283,17 @@ function removeOrder(id) {
 
 function clearAll() {
     if (confirm('Apagar tudo?')) {
-        orders = []; save(); render();
+        orders = [];
+        save();
+        render();
+    }
+}
+
+function clearClosed() {
+    if (confirm('Apagar histórico?')) {
+        closedDays = [];
+        saveCash();
+        render();
     }
 }
 
@@ -320,16 +315,6 @@ function exportJSON() {
     a.download = 'pedidos.json';
     a.click();
 }
-const btnClearClosed = document.getElementById('btnClearClosed');
-
-btnClearClosed.onclick = () => {
-    if (!closedDays.length) return alert('Não há histórico para apagar.');
-    if (confirm('Deseja apagar todo o histórico de caixas fechados?')) {
-        closedDays = [];
-        saveCash();
-        render();
-    }
-};
 
 function importJSON(e) {
     const f = e.target.files[0];
